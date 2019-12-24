@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+
+<head>
+    <!-- Bokeh includes-->
+    <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.13.min.css" type="text/css" />
+    <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.13.min.js"></script>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- Give the web page a title -->
+
+  <title>Clare LGFA Analytics Platform</title>
+  <img src="images/clare.jpg">
+
+  <!-- Add Bootstrap stylesheet -->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- Create relative link for CSS stylesheet -->
+
+  <link rel="stylesheet" href="../static/css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+
+  <!-- Link in plotly visualization library -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+</head>
+
+
+
+<body>
+
+  <!-- Create a container class to hold the entire body of code -->
+
+  <div class="container">
+
+    <!-- Make the web page's heading its own row -->
+
+    <div class="row">
+
+      <!-- Ensure heading text takes up the entire row -->
+
+      <div class="col-md-12 col-lg-12 jumbotron text-center">
+
+        <!-- Label the uppermost heading -->
+
+        <h1>Clare LGFA Analytics Platform</h1>
+
+      <!-- Ensure the "Select County" toggle switch takes up the space beneath the uppermost heading -->  
+
+      <div class="col-md-12 col-lg-12">
+
+        <!-- Write "Select County" in large font to make sure the viewer knows what do do when opening the application -->
+
+        <h2>Select County:</h2>
+
+           <!--Create the toggle switch in which the user can change between County to display different information -->
+
+          <select id="selCounty" onchange="optionChanged(this.value)"></select>
+
+      </div>
+
+      </div>
+
+    </div>
+    
+    
+
+    <!-- Create a heading that labels the block of graphs/charts "Team Information" -->
+
+    <h2>Team Information:</h2>
+    
+
+    <!-- Put the "Team Information" section into its own well -->
+
+    <div class="well">
+
+      <!-- Make the histogram into its own row on the page -->
+
+      <div class = "row">
+
+        <!-- Ensure the histogram takes up the entire row -->
+
+        <div class = "col-md-12 col-lg-12">
+
+          <!-- Establish the histogram id, which establishes where the histogram created in the JavaScript code will populate -->
+          <div id="histogram"></div>
+         
+        </div>  
+
+      </div>
+
+
+     
+
+   
+    
+    </div>  
+  
+    </div>
+
+    </div>
+
+
+  <!-- Link in JavaScript visualization -->
+
+
+
+  <!-- Create local link into the app.js file -->
+
+  <script src="static\js\app.js"></script>
+  
+
+  <footer class="footer">
+      <p>&copy; DW Analytics 2019</p>
+    </footer>
+
+
+</body>
+
+
+
+</html>
+

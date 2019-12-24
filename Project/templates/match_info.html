@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Clare LGFA Analytics Platform</title>
+
+  
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/css/signup.css" rel="stylesheet">
+    <script src="../static/js/jquery-1.11.2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>  
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+ <img src="images/clare.jpg">
+ 
+  </head>
+
+  <body>
+        
+    <div class="container">
+      <div class="header">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+             <li role="presentation" class="active"><a href="/userHome">Home</a></li>
+            <li role="presentation" ><a href="/logout">Logout</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Clare LGFA Analytics Platform</h3>
+	  </div>
+	</div>
+   
+	  <div class="jumbotron">
+			<h1>Match Information</h1>
+			<p class="lead"></p>
+            <p><a class="btn btn-lg btn-success" href="/matches_info" role="button">See Match Information</a></p>
+            <p class="lead"></p>
+			<p><a class="btn btn-lg btn-success" href="/dashboard" role="button">View Dashboard</a></p>
+            <div class="container">
+                    <div> <button id="showCreateButton" onclick="showCreate()">Create</button></div>
+                    <div id='createUpdateForm' style="display: none">
+                
+                            <h2><span id="createLabel">Create a</span> 
+                                <span id="updateLabel">Update</span> Match</h2>
+                
+                            Game ID <input type="text" name="game_id"/> <br/>
+                
+                            Team <select name="team">
+                
+                                    <option value="A">A</option>
+                
+                                    <option value="B">B</option>
+                
+                
+                            </select> <br/>
+                
+                            Team Name <input type="text" name="team_name"/> <br/>
+                
+                            Venue <input type="text" name="venue"/> <br/>
+                            Date <input type="text" name="date"/> <br/>
+                
+                            Competition <input type="text" name="competition"><br/>
+                
+                            Round <input type="text" name="round"/> <br/>
+                
+                            Player No <input type="number" name="player"/> <br/>
+                            Player <input type="text" name="player_name"/> <br/>
+                
+                            <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
+                
+                            <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
+                
+                    </div>
+                          <table class="container" id="matchTable" >
+                            
+                        <tr>
+                                <th>Game ID</th>
+                                <th>Team</th>
+                                <th>Team Name</th>
+                                <th>Venue</th>
+                                <th>Date</th>
+                                <th>Competition</th>
+                                <th>Round</th>
+                                <th>Player No</th>
+                                <th>Player</th>
+                                
+                        </tr>
+                        
+                    </table>
+                </div>
+        
+        </div>
+  </body> 
+<script>
+
+
+  
+function showCreate(){
+
+document.getElementById('showCreateButton').style.display="none"
+
+document.getElementById('matchTable').style.display="none"
+
+document.getElementById('createUpdateForm').style.display="block"
+
+
+
+document.getElementById('createLabel').style.display="inline"
+
+document.getElementById('updateLabel').style.display="none"
+
+
+
+document.getElementById('doCreateButton').style.display="block"
+
+document.getElementById('doUpdateButton').style.display="none"
+
+
+
+}
+
+function showViewAll(){
+
+document.getElementById('showCreateButton').style.display="block"
+
+document.getElementById('matchTable').style.display="block"
+
+document.getElementById('createUpdateForm').style.display="none"
+
+}
+
+function showUpdate(buttonElement){
+
+document.getElementById('showCreateButton').style.display="none"
+
+document.getElementById('matchTable').style.display="none"
+
+document.getElementById('createUpdateForm').style.display="block"
+
+
+
+document.getElementById('createLabel').style.display="none"
+
+document.getElementById('updateLabel').style.display="inline"
+
+
+
+document.getElementById('doCreateButton').style.display="none"
+
+document.getElementById('doUpdateButton').style.display="block"
+
+
+
+
+
+var rowElement = buttonElement.parentNode.parentNode
+
+// these is a way of finding the closest <tr> which would safer, closest()
+
+
+
+var match = getMatchFromRow(rowElement)
+
+populateFormWithMatch(match)
+
+}
+
+function doCreate(){
+
+var form = document.getElementById('createUpdateForm')
+
+
+
+var match = {}
+
+match.game_id =form.querySelector('input[name="game_id"]').value  
+
+match.team =form.querySelector('input[name="team"]').value  
+
+match.team_name =form.querySelector('select[name="team_name"]').value
+
+match.venue=form.querySelector('input[name="venue"]').value
+
+match.date  =form.querySelector('input[name="date"]').value
+
+match.competition = form.querySelector('input[name="competition"]').value  
+
+match.round =form.querySelector('select[name="round"]').value
+
+match.player =form.querySelector('input[name="player"]').value
+
+match.player_name =form.querySelector('input[name="player_name"]').value
+
+
+
+
+
+console.log(JSON.stringify(match))
+
+createMatchAjax(match)
+
+//addMatchToTable(match)
+
+//clearForm()
+//showViewAll()
+
+}
+
+
+function doUpdate(){
+
+var match = getMatchFromForm();
+
+var rowElement = document.getElementById(match.game_id);
+
+updateMatchAjax(match);
+
+setMatchInRow(rowElement,match);
+
+clearForm();
+
+showViewAll();
+
+}
+
+function doDelete(r){
+
+var tableElement = document.getElementById('matchTable');
+
+var rowElement = r.parentNode.parentNode;
+
+var index = rowElement.rowIndex;
+
+deleteMatchAjax(rowElement.getAttribute("game_id"));
+
+tableElement.deleteRow(index);
+
+}
+
+function addMatchToTable(match){
+        var tableElement = document.getElementById('matchTable')
+        var rowElement = tableElement.insertRow(-1)
+        rowElement.setAttribute('game_id',match.game_id)
+        var cell1 = rowElement.insertCell(0);
+        cell1.innerHTML = match.game_id
+        var cell2 = rowElement.insertCell(1);
+        cell2.innerHTML = match.team
+        var cell3 = rowElement.insertCell(2);
+        cell3.innerHTML = match.team_name
+        var cell4 = rowElement.insertCell(3);
+        cell4.innerHTML = match.venue
+		var cell5 = rowElement.insertCell(4);
+        cell5.innerHTML = match.date
+        var cell6 = rowElement.insertCell(5);
+        cell6.innerHTML = match.competition
+        
+        var cell7 = rowElement.insertCell(6);
+        cell7.innerHTML = match.round
+        var cell8 = rowElement.insertCell(7);
+        cell8.innerHTML = match.player
+        var cell9 = rowElement.insertCell(8);
+        cell9.innerHTML = match.player_name
+        var cell10 = rowElement.insertCell(9);
+        cell10.innerHTML = '<button onclick="showUpdate(this)">Update Match</button>'
+        var cell11 = rowElement.insertCell(10);
+        cell11.innerHTML = '<button onclick=doDelete(this)>Delete Match</button>'
+
+    }
+
+
+
+    function clearForm(){
+
+var form = document.getElementById('createUpdateForm')
+
+
+form.querySelector('input[name="game_id"]').value  =''
+
+form.querySelector('input[name="team"]').value  =''
+
+form.querySelector('select[name="team_name"]').value=''
+
+form.querySelector('input[name="venue"]').value=''
+
+form.querySelector('input[name="date"]').value=''
+
+form.querySelector('input[name="competition"]').value  =''
+
+form.querySelector('select[name="round"]').value=''
+
+form.querySelector('input[name="player"]').value=''
+
+form.querySelector('input[name="player_name"]').value=''
+
+}
+
+
+
+function getMatchFromRow(rowElement){
+
+var match ={}
+
+match.game_id  = parseInt(rowElement.cells[0].firstChild.textContent(10))
+
+match.team = rowElement.cells[1].firstChild.textContent
+
+match.team_name = rowElement.cells[2].firstChild.textContent
+
+match.venue = (rowElement.cells[3].firstChild.textContent)
+
+match.date  = rowElement.cells[4].firstChild.textContent
+
+match.competition = rowElement.cells[5].firstChild.textContent
+
+match.round = rowElement.cells[6].firstChild.textContent
+
+match.player = parseInt(rowElement.cells[7].firstChild.textContent(10))
+
+match.player_name = (rowElement.cells[8].firstChild.textContent)
+return match
+
+}
+
+
+function setMatchInRow(rowElement, match){
+
+parseInt(rowElement.cells[0].firstChild.textContent(10))=match.game_id  
+rowElement.cells[1].firstChild.textContent=match.team
+
+rowElement.cells[2].firstChild.textContent=match.team_name
+
+(rowElement.cells[3].firstChild.textContent)=match.venue
+
+rowElement.cells[4].firstChild.textContent=match.date
+
+rowElement.cells[5].firstChild.textContent=match.competition
+
+rowElement.cells[6].firstChild.textContent=match.round 
+
+parseInt(rowElement.cells[7].firstChild.textContent(10))=match.player 
+(rowElement.cells[8].firstChild.textContent)=match.player_name
+
+}
+
+function populateFormWithMatch(match){
+  
+
+  var form = document.getElementById('createUpdateForm')
+  
+  form.querySelector('input[name="game_id"]').value  =match.game_id 
+  
+  form.querySelector('input[name="team"]').value  =match.team
+  
+  form.querySelector('select[name="team_name"]').value=match.team_name
+  
+  form.querySelector('input[name="venue"]').value=match.venue
+  
+  form.querySelector('input[name="date"]').value=match.date
+  
+  form.querySelector('input[name="competition"]').value  =match.competition
+  
+  form.querySelector('select[name="round"]').value=match.round
+  
+  form.querySelector('input[name="player"]').value=match.player
+  
+  form.querySelector('input[name="player_name"]').value=match.player_name
+  
+  
+  
+  return match
+  
+  }
+
+function getMatchFromForm(){
+
+var form = document.getElementById('createUpdateForm')
+
+var match = {}
+
+match.game_id =form.querySelector('input[name="game_id"]').value  
+
+match.team=form.querySelector('input[name="team"]').value  
+
+match.team_name =form.querySelector('select[name="team_name"]').value
+
+match.venue =form.querySelector('input[name="venue"]').value
+
+match.date =form.querySelector('input[name="date"]').value
+
+match.competition =form.querySelector('input[name="competition"]').value  
+
+match.round=form.querySelector('select[name="round"]').value
+
+match.player=form.querySelector('input[name="player"]').value
+
+match.player_name =form.querySelector('input[name="player_name"]').value
+
+console.log(JSON.stringify(match))
+
+return match
+
+}
+
+function getAllAjax(){
+        $.ajax({
+            "url": "http://127.0.0.1:5000/matches",
+            "method":"GET",
+            "data":"",
+            "dataType": "JSON",
+            "success":function(results){
+                //console.log(result);
+                for (match of results){
+                    addMatchToTable(match);
+                }
+                
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+
+
+
+function createMatchAjax(match){
+
+
+console.log(JSON.stringify(match));
+
+$.ajax({
+
+    "url": "http://127.0.0.1:5000/matches",
+
+    "method":"POST",
+
+    "data":JSON.stringify(match),
+
+    "dataType": "JSON",
+
+    contentType: "application/json; charset=utf-8",
+
+    "success":function(result){
+
+        //console.log(result);
+        addJobToTable(match)
+                clearForm()
+                showViewAll()
+         
+
+    },
+
+    "error":function(xhr,status,error){
+
+        console.log("error: "+status+" msg:"+error);
+
+    }
+
+});
+
+}
+
+function updateMatchAjax(match){
+
+
+console.log(JSON.stringify(match));
+
+$.ajax({
+
+    "url": "http://127.0.0.1:5000/matches/"+encodeURI(match.game_id),
+
+    "method":"PUT",
+
+    "data":JSON.stringify(match),
+
+    "dataType": "JSON",
+
+    contentType: "application/json; charset=utf-8",
+
+    "success":function(result){
+
+       // console.log(result);
+
+          
+
+    },
+
+    "error":function(xhr,status,error){
+
+        console.log("error: "+status+" msg:"+error);
+
+    }
+
+});
+
+}
+
+function deleteMatchAjax(game_id){
+
+
+console.log(JSON.stringify(match));
+
+$.ajax({
+
+    "url": "http://127.0.0.1:5000/matches/"+encodeURI(game_id),
+
+    "method":"DELETE",
+
+    "data":"",
+
+    "dataType": "JSON",
+
+    contentType: "application/json; charset=utf-8",
+
+    "success":function(result){
+
+        //console.log(result);
+
+          
+
+    },
+
+    "error":function(xhr,status,error){
+
+        console.log("error: "+status+" msg:"+error);
+
+    }
+
+});
+
+}
+
+
+
+
+
+    getAllAjax();
+        </script>
+      
+
+ <footer class="footer">
+        <p>&copy; DW Analytics 2019</p>
+      </footer>
+
+
+  
+</html>
+
